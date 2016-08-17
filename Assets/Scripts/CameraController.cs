@@ -16,7 +16,6 @@ public class CameraController : MonoBehaviour {
 		transform.position = ball.transform.position + offset;
 
 		if (transform.position.z >= 1200){
-			Debug.Log ("POSITION");
 			transform.position = new Vector3(0,22,1200);
 		}
 	}

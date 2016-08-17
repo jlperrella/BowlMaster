@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Ball : MonoBehaviour {
 
-	public float launchSpeed = 400f;
+	public Vector3 launchVector;
 
 	private Rigidbody ball;
 	private AudioSource ballSound;
@@ -11,18 +11,13 @@ public class Ball : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ball = GetComponent<Rigidbody>();
+		ball.useGravity = false;
+	}
+
+	public void LaunchBall (Vector3 velocity) {
+		ball.velocity = velocity;
+		ball.useGravity = true;
 		ballSound = GetComponent<AudioSource> ();
-	}
-
-	void FixedUpdate () {
-		if (Input.GetKeyDown(KeyCode.Space)){
-			LaunchBall ();
-		}
-	}
-
-	public void LaunchBall () {
-		ball.velocity = new Vector3 (0, 0, launchSpeed);
 		ballSound.Play ();
 	}
-
 }
