@@ -7,11 +7,13 @@ public class Ball : MonoBehaviour {
 
 	private Rigidbody ball;
 	private AudioSource ballSound;
+	private float startPosition;
+	private bool inPlay;
 
-	// Use this for initialization
 	void Start () {
 		ball = GetComponent<Rigidbody>();
 		ball.useGravity = false;
+		inPlay = false;
 	}
 
 	public void LaunchBall (Vector3 velocity) {
@@ -19,5 +21,15 @@ public class Ball : MonoBehaviour {
 		ball.useGravity = true;
 		ballSound = GetComponent<AudioSource> ();
 		ballSound.Play ();
+		inPlay = true;
+	}
+
+	public void BallPosition (float xMove) {
+		if (inPlay == false) {
+			ball.transform.Translate (xMove, 0, 0);
+			ball.transform.position = new Vector3 (Mathf.Clamp (ball.transform.position.x, -35f, 35f), ball.transform.position.y, ball.transform.position.z);
+		} else {
+			return;
+		}
 	}
 }

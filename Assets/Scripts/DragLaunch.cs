@@ -28,11 +28,11 @@ public class DragLaunch : MonoBehaviour {
 	public void DragEnd () {
 		PointerClickPosition ();
 		clickEndPosition = PointerClickPosition ().y;
-		float launchXValue = PointerClickPosition ().x * 3; // *3 to increase challenge in getting ideal x coordinate
+		float launchXValue = PointerClickPosition ().x * 2; // *2 to increase challenge in getting ideal x coordinate
 		clickEnd = Time.time;
 		swipeTime = clickEnd - clickStart;
 		swipeDistance = clickEndPosition - clickStartPosition;
-		swipeSpeed = swipeDistance / swipeTime * 3; //*3 to increase speed to keep up with increased gravity
+		swipeSpeed = swipeDistance / swipeTime * 2; //*2 to increase speed to keep up with increased gravity
 		newLaunchVector = new Vector3 (launchXValue, 0, swipeSpeed);
 		ball.LaunchBall (newLaunchVector);
 	}
