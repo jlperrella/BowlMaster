@@ -8,14 +8,22 @@ public class PinController : MonoBehaviour {
 	private GameObject pins;
 	private GameObject[] individualPinArray;
 	private Rigidbody rigidBody;
+	private GameObject pinZone;
+	private GameObject singlePin;
+
+
+
+	void Awake () {
+		individualPinArray = GameObject.FindGameObjectsWithTag("pin");
+		pins = GameObject.Find ("Pins");
+	}
 
 	public void ResetPins () {
 		Instantiate (pinsPrefab, new Vector3(0f,20f,1829f),Quaternion.identity);
 	}
 
 	public void LiftPins () {
-		individualPinArray = GameObject.FindGameObjectsWithTag("pin");
-		pins = GameObject.Find ("Pins");
+		
 		pins.transform.Translate (0f, 25f, 0f);
 
 		foreach (GameObject pin in individualPinArray){

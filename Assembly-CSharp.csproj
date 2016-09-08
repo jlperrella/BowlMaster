@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\DragLaunch.cs" />
      <Compile Include="Assets\Scripts\Pin.cs" />
      <Compile Include="Assets\Scripts\PinController.cs" />
+     <Compile Include="Assets\Scripts\PinZone.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
