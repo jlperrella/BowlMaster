@@ -1,23 +1,48 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PinZone : MonoBehaviour {
 
-	private Ball ball;
+	public Text scoreBoard;
+	private bool ballInBox = false;
 
-	// Use this for initialization
 	void Start () {
-		ball = FindObjectOfType<Ball> ();
 	}
 		
-	void OnTriggerEnter (Collider ballCollision) {
-		
-	}
-	
-	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			ball.GetComponent<Rigidbody> ().useGravity = false;
+		scoreBoard.text = CountStanding ().ToString ();
+		if (ballInBox == true) {
+			scoreBoard.color = Color.red;
 		}
 	}
+		
+	void OnTriggerEnter (Collider ballEnterBox) {
+		Ball ball = ballEnterBox.gameObject.GetComponent<Ball> ();
+		if (ball) {
+			ballInBox = true;
+		}
+	}
+
+	void OnTriggerExit (Collider pinExitBox) {
+		Pin pin = pinExitBox.gameObject.GetComponent<Pin> (); 
+		if (pin) {
+			Destroy (pin.gameObject);
+		}
+	}
+		
+		
+	int CountStanding () {
+		int standing = 0;
+		//allows you to access functions on the Pin Script
+		// Pin = Pin Script pin = local namespace
+		foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
+			if (pin.IsStanding ()) {
+				standing++;
+			}
+
+		}
+		return standing;
+	}
+
 }
