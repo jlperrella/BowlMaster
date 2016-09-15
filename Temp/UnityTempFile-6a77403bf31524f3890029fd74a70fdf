@@ -85,6 +85,6 @@
 'Assets/Scripts/Pin.cs'
 'Assets/Scripts/PinController.cs'
 'Assets/Scripts/PinZone.cs'
-'Assets/Shredder.cs'
+'Assets/Scripts/Shredder.cs'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Runtime.Serialization.dll'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Xml.Linq.dll'

@@ -5,15 +5,18 @@ using System.Collections;
 public class PinZone : MonoBehaviour {
 
 	public Text scoreBoard;
-	private bool ballInBox = false;
+	public int lastStandingCount = -1;
 
-	void Start () {
-	}
+	private bool ballInBox = false;
+	private float lastChangeTime;
 		
 	void Update () {
 		scoreBoard.text = CountStanding ().ToString ();
 		if (ballInBox == true) {
 			scoreBoard.color = Color.red;
+			CheckStanding ();
+		} else {
+			scoreBoard.color = Color.green;
 		}
 	}
 		
@@ -40,9 +43,31 @@ public class PinZone : MonoBehaviour {
 			if (pin.IsStanding ()) {
 				standing++;
 			}
-
 		}
 		return standing;
 	}
+		
+	void CheckStanding () {
+		int currentStanding = CountStanding ();
+
+		if (currentStanding != lastStandingCount) {
+			lastChangeTime = Time.time;
+			lastStandingCount = currentStanding;
+			return;
+		}
+		float settleTime = 3f;
+		if ((Time.time - lastChangeTime) > settleTime) {
+			PinsSettled ();
+		}
+
+	}
+	void PinsSettled () {
+		ballInBox = false;
+		lastStandingCount = -1;
+		Ball ball = FindObjectOfType<Ball> ();
+		ball.ResetBall ();
+	}
+
+
 
 }
