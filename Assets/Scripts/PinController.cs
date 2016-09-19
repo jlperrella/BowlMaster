@@ -5,11 +5,9 @@ public class PinController : MonoBehaviour {
 
 	public GameObject pinsPrefab;
 	private GameObject pins;
-	private Rigidbody rigidBody;
-	private float raiseHeight = 20f;
 
 	public void ResetPins () {
-		Instantiate (pinsPrefab, new Vector3(0f,raiseHeight,1829f),Quaternion.identity);
+		Instantiate (pinsPrefab, new Vector3(0f,20f,1829f),Quaternion.identity);
 	}
 
 	public void LiftPins () {

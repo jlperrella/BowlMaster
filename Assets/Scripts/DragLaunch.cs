@@ -32,7 +32,7 @@ public class DragLaunch : MonoBehaviour {
 		clickEnd = Time.time;
 		swipeTime = clickEnd - clickStart;
 		swipeDistance = clickEndPosition - clickStartPosition;
-		swipeSpeed = swipeDistance / swipeTime * 2; //*2 to increase speed to keep up with increased gravity
+		swipeSpeed = swipeDistance / swipeTime * 1.5f; //*2 to increase speed to keep up with increased gravity
 		newLaunchVector = new Vector3 (launchXValue, 0, swipeSpeed);
 		ball.LaunchBall (newLaunchVector);
 	}

@@ -9,12 +9,13 @@ public class PinZone : MonoBehaviour {
 
 	private bool ballInBox = false;
 	private float lastChangeTime;
+
 		
 	void Update () {
 		scoreBoard.text = CountStanding ().ToString ();
 		if (ballInBox == true) {
 			scoreBoard.color = Color.red;
-			CheckStanding ();
+			UpdateStandingAndSettle ();
 		} else {
 			scoreBoard.color = Color.green;
 		}
@@ -34,11 +35,8 @@ public class PinZone : MonoBehaviour {
 		}
 	}
 		
-		
-	int CountStanding () {
+	public int CountStanding () {
 		int standing = 0;
-		//allows you to access functions on the Pin Script
-		// Pin = Pin Script pin = local namespace
 		foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
 			if (pin.IsStanding ()) {
 				standing++;
@@ -47,7 +45,7 @@ public class PinZone : MonoBehaviour {
 		return standing;
 	}
 		
-	void CheckStanding () {
+	void UpdateStandingAndSettle () {
 		int currentStanding = CountStanding ();
 
 		if (currentStanding != lastStandingCount) {
@@ -66,8 +64,7 @@ public class PinZone : MonoBehaviour {
 		lastStandingCount = -1;
 		Ball ball = FindObjectOfType<Ball> ();
 		ball.ResetBall ();
+		ScoreKeeper scoreKeeper = FindObjectOfType<ScoreKeeper> ();
+		scoreKeeper.KeepScore ();
 	}
-
-
-
 }
