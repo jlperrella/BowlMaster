@@ -5,7 +5,7 @@ public class ActionMaster {
 
 	public enum Action {Clean, Reset, EndTurn, EndGame};
 
-	//private int[] bowls = new int[21];
+	private int[] bowls = new int[21];
 	public int bowl = 1;
 		
 
@@ -14,20 +14,47 @@ public class ActionMaster {
 			throw new UnityException ("invalid pin count");
 		}
 
-		if (pins == 10) {
-			bowl += 2;
-			return Action.EndTurn;
+		bowls [bowl - 1] = pins;
+
+		if (bowl == 21) {return Action.EndGame;
 		}
 
-		if (bowl % 2 != 0) { //MID FRAME
+		if (bowl == 20 && bowls[18] == 10 && pins <= 9 && Bowl21Awarded()) {
 			bowl += 1;
 			return Action.Clean;
-		} 
-
-		if (bowl % 2 == 0) { //END FRAME
-			bowl += 1;
-			return Action.EndTurn;
 		}
+			
+		if (bowl >= 19 && Bowl21Awarded ()) {
+			bowl += 1;
+			return Action.Reset;
+		}
+
+		if (bowl == 20 && !Bowl21Awarded()) {
+			return Action.EndGame;
+		}
+
+			if (bowl % 2 != 0) { //First Bowl in Frame
+				if (pins == 10) {
+				bowl += 2;
+				return Action.EndTurn;
+			} 
+			else {
+				bowl += 1;
+				return Action.Clean;
+				}
+			} 
+
+			if (bowl % 2 == 0) { //Second Bowl in Frame
+				bowl += 1;
+				return Action.EndTurn;
+			}
+			
 		throw new UnityException ("Not sure what action to return");
 	}
+		
+	private bool Bowl21Awarded () {
+		//because bowl count starts at 1, - 1 is required when using bowls[]
+		return (bowls [19 - 1] + bowls [20 - 1] >= 10);
+	}
+
 }

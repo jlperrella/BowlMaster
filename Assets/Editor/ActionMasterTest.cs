@@ -52,9 +52,81 @@ public class ActionMasterTest {
 		actionMaster.Bowl (4);
 		Assert.AreEqual (endTurn, actionMaster.Bowl(6));
 	}
+
 	[Test]
-	public void T0610thFrameHasBonusTurn() {
-		
+	public void T06REMOVEDGameEndsAfter10thFrame() {
+	}
+
+	[Test]
+	public void T07CheckRestAtStrikeInLastFrame () {
+		int[] rolls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+		foreach (int roll in rolls) {
+			actionMaster.Bowl (roll);
+		}
+		Assert.AreEqual (reset, actionMaster.Bowl (10));
+	}
+
+	[Test]
+	public void T08CheckRestAtSpareInLastFrame () {
+		int[] rolls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+		foreach (int roll in rolls) {
+			actionMaster.Bowl (roll);
+		}
+		actionMaster.Bowl (1);
+		Assert.AreEqual (reset, actionMaster.Bowl (9));
+	}
+
+	[Test]
+	public void T09EndGameScenario1 () {
+		int[] rolls = { 8, 2, 7, 3, 3, 4, 10, 2, 8, 10, 10, 8, 0, 10, 8, 2, };
+		foreach (int roll in rolls) {
+			actionMaster.Bowl (roll);
+		}
+		Assert.AreEqual (endGame, actionMaster.Bowl (9));
+	}
+
+	[Test]
+	public void T10GameEndsAtBowl20 () {
+		int[] rolls = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+
+		foreach (int roll in rolls) {
+			actionMaster.Bowl (roll);
+		}
+		Assert.AreEqual (endGame, actionMaster.Bowl (1));
+	}
+
+	[Test]
+	public void T11StrikeOnBowl19Then5 () {
+		int[] rolls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10};
+
+		foreach (int roll in rolls) {
+			actionMaster.Bowl (roll);
+		}
+		Assert.AreEqual (clean, actionMaster.Bowl (5));
+	}
+
+	[Test]
+	public void T12aZeroAndStrikeSkipsABowl () {
+		int[] rolls = {0, 10,};
+		foreach (int roll in rolls) {
+			actionMaster.Bowl (roll);
+		}
+		Assert.AreEqual (clean, actionMaster.Bowl (5));
+		}
+
+	[Test]
+	public void T1310FrameTurkey () {
+		int[] rolls = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+
+		foreach (int roll in rolls) {
+			actionMaster.Bowl (roll);
+		}
+		Assert.AreEqual (reset, actionMaster.Bowl (10));
+		Assert.AreEqual (reset, actionMaster.Bowl (10));
+		Assert.AreEqual (endGame, actionMaster.Bowl (10));
 	}
 }
+
 	

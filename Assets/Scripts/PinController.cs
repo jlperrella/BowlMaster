@@ -23,7 +23,7 @@ public class PinController : MonoBehaviour {
 	}
 
 	public void DestroyDuplicatePinArray () {
-		pins = GameObject.Find("Pins");
+		pins = GameObject.FindGameObjectWithTag("pinArray");
 		Destroy(pins);
 	}
 

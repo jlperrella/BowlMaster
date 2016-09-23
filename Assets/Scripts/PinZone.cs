@@ -9,10 +9,18 @@ public class PinZone : MonoBehaviour {
 
 	private bool ballInBox = false;
 	private float lastChangeTime;
+	public int lastSettledCount = 10;
+	private ActionMaster actionMaster = new ActionMaster();
+	private Animator animator;
 
 		
+	void Start () {
+		animator = FindObjectOfType<PinController> ().GetComponent<Animator>();
+
+	}
+
 	void Update () {
-		scoreBoard.text = CountStanding ().ToString ();
+		scoreBoard.text = CountStandingPins ().ToString ();
 		if (ballInBox == true) {
 			scoreBoard.color = Color.red;
 			UpdateStandingAndSettle ();
@@ -35,22 +43,22 @@ public class PinZone : MonoBehaviour {
 		}
 	}
 		
-	public int CountStanding () {
-		int standing = 0;
+	public int CountStandingPins () {
+		int standingPins = 0;
 		foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
 			if (pin.IsStanding ()) {
-				standing++;
+				standingPins += 1;
 			}
 		}
-		return standing;
+		return standingPins;
 	}
 		
 	void UpdateStandingAndSettle () {
-		int currentStanding = CountStanding ();
+		int currentFallen = CountStandingPins ();
 
-		if (currentStanding != lastStandingCount) {
+		if (currentFallen != lastStandingCount) {
 			lastChangeTime = Time.time;
-			lastStandingCount = currentStanding;
+			lastStandingCount = currentFallen;
 			return;
 		}
 		float settleTime = 3f;
@@ -60,11 +68,39 @@ public class PinZone : MonoBehaviour {
 
 	}
 	void PinsSettled () {
+		int standing = CountStandingPins ();
+		int pinFall = lastSettledCount - standing;
+		lastSettledCount = CountStandingPins ();
+
+		ActionMaster.Action actionInAction = actionMaster.Bowl (pinFall);
+	
+		if (actionInAction == ActionMaster.Action.Clean) {
+			animator.SetTrigger ("CleanPins");
+		}
+		else if (actionInAction  == ActionMaster.Action.EndTurn) {
+			animator.SetTrigger ("ResetPins");
+			lastSettledCount = 10;
+		}
+		else if (actionInAction  == ActionMaster.Action.Reset) {
+		animator.SetTrigger ("ResetPins");
+		lastSettledCount = 10;
+		}
+		else if (actionInAction == ActionMaster.Action.EndGame) {
+			print ("GAME OVER");
+		}
+
 		ballInBox = false;
 		lastStandingCount = -1;
 		Ball ball = FindObjectOfType<Ball> ();
 		ball.ResetBall ();
-		ScoreKeeper scoreKeeper = FindObjectOfType<ScoreKeeper> ();
-		scoreKeeper.KeepScore ();
 	}
+
+
+
+	void RegulatePlay () {
+
+
+
+	}
+
 }

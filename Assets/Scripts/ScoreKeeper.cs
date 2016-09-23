@@ -17,7 +17,7 @@ public class ScoreKeeper : MonoBehaviour {
 	public void KeepScore () {
 		
 		if (firstBall == true) {
-			if (pinZone.CountStanding () > 0) {
+			if (pinZone.CountStandingPins () > 0) {
 				swiper.GetComponent<Animator> ().SetTrigger ("CleanPins");
 				firstBall = false;
 				return;
