@@ -6,17 +6,16 @@ public class PinZone : MonoBehaviour {
 
 	public Text scoreBoard;
 	public int lastStandingCount = -1;
+	public bool ballInBox = false;
 
-	private bool ballInBox = false;
 	private float lastChangeTime;
-	public int lastSettledCount = 10;
+	private int lastSettledCount = 10;
 	private ActionMaster actionMaster = new ActionMaster();
 	private Animator animator;
 
 		
 	void Start () {
 		animator = FindObjectOfType<PinController> ().GetComponent<Animator>();
-
 	}
 
 	void Update () {
@@ -53,7 +52,7 @@ public class PinZone : MonoBehaviour {
 		return standingPins;
 	}
 		
-	void UpdateStandingAndSettle () {
+	public void UpdateStandingAndSettle () {
 		int currentFallen = CountStandingPins ();
 
 		if (currentFallen != lastStandingCount) {
@@ -67,7 +66,7 @@ public class PinZone : MonoBehaviour {
 		}
 
 	}
-	void PinsSettled () {
+	public void PinsSettled () {
 		int standing = CountStandingPins ();
 		int pinFall = lastSettledCount - standing;
 		lastSettledCount = CountStandingPins ();
@@ -82,8 +81,8 @@ public class PinZone : MonoBehaviour {
 			lastSettledCount = 10;
 		}
 		else if (actionInAction  == ActionMaster.Action.Reset) {
-		animator.SetTrigger ("ResetPins");
-		lastSettledCount = 10;
+			animator.SetTrigger ("ResetPins");
+			lastSettledCount = 10;
 		}
 		else if (actionInAction == ActionMaster.Action.EndGame) {
 			print ("GAME OVER");
@@ -94,13 +93,4 @@ public class PinZone : MonoBehaviour {
 		Ball ball = FindObjectOfType<Ball> ();
 		ball.ResetBall ();
 	}
-
-
-
-	void RegulatePlay () {
-
-
-
-	}
-
 }

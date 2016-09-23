@@ -4,15 +4,19 @@ using System.Collections;
 public class Ball : MonoBehaviour {
 
 	public Vector3 launchVector;
+	public bool inPlay;
 
 	private Rigidbody ball;
 	private AudioSource ballSound;
 	private Vector3 startPosition = new Vector3(0,20,30);
-	public bool inPlay;
+	private PinZone pinZone;
+	private Gutter gutter;
+	private float ballEntersGutterTime;
 
 	void Start () {
 		ball = GetComponent<Rigidbody>();
 		BallStartConditions ();
+		pinZone = FindObjectOfType<PinZone> ();
 	}
 
 	void Update () {
@@ -52,11 +56,16 @@ public class Ball : MonoBehaviour {
 	}
 
 	public void BallTimeOut () {
-		if(inPlay == true && ball.velocity == Vector3.zero){
-			ResetBall();
+		if(inPlay == true && ball.velocity.z <= 30){
+			pinZone.PinsSettled ();
 		}
 
 	}
 
-
+	void OnCollisionEnter (Collision ballInGutter) {
+		gutter = ballInGutter.gameObject.GetComponent<Gutter> ();
+		if (gutter && pinZone.ballInBox == false) {
+			pinZone.UpdateStandingAndSettle ();
+		}
+	}
 }

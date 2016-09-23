@@ -4,6 +4,7 @@ using System.Collections;
 public class PinController : MonoBehaviour {
 
 	public GameObject pinsPrefab;
+
 	private GameObject pins;
 
 	public void ResetPins () {

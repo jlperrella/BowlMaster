@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\Ball.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\DragLaunch.cs" />
+     <Compile Include="Assets\Scripts\Gutter.cs" />
      <Compile Include="Assets\Scripts\Pin.cs" />
      <Compile Include="Assets\Scripts\PinController.cs" />
      <Compile Include="Assets\Scripts\PinZone.cs" />

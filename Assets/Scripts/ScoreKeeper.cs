@@ -12,8 +12,7 @@ public class ScoreKeeper : MonoBehaviour {
 		swiper = FindObjectOfType<PinController> ();
 		pinZone = FindObjectOfType<PinZone> ();
 	}
-
-
+		
 	public void KeepScore () {
 		
 		if (firstBall == true) {
