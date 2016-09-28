@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scripts\PinController.cs" />
      <Compile Include="Assets\Scripts\PinZone.cs" />
      <Compile Include="Assets\Scripts\ScoreKeeper.cs" />
+     <Compile Include="Assets\Scripts\ScoreMaster.cs" />
      <Compile Include="Assets\Scripts\Shredder.cs" />
      <Compile Include="Assets\UnityTestTools\Assertions\AssertionComponent.cs" />
      <Compile Include="Assets\UnityTestTools\Assertions\AssertionException.cs" />
