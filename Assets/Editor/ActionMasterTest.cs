@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
+using System.Linq;
 
 
 [TestFixture]
 public class ActionMasterTest {
 
-	private ActionMaster actionMaster;
+	private List<int> pinFalls;
 	private ActionMaster.Action endTurn = ActionMaster.Action.EndTurn;
 	private ActionMaster.Action endGame = ActionMaster.Action.EndGame;
 	private ActionMaster.Action clean = ActionMaster.Action.Clean;
@@ -15,7 +16,7 @@ public class ActionMasterTest {
 
 	[SetUp]
 	public void Setup () {
-		actionMaster = new ActionMaster ();
+		pinFalls = new List<int> ();
 	}
 
 
@@ -26,106 +27,81 @@ public class ActionMasterTest {
 
 	[Test]
 	public void T01OneStrikeReturnsEndTurn () {
-		Assert.AreEqual (endTurn, actionMaster.Bowl(10));
+		pinFalls.Add (10);
+		Assert.AreEqual (endTurn, ActionMaster.NextAction (pinFalls));
 	}
 
 	[Test]
 	public void T02Bowl8ReturnsClean () {
-		Assert.AreEqual (clean,	actionMaster.Bowl (7));
+		pinFalls.Add (8);
+		Assert.AreEqual (clean,	ActionMaster.NextAction (pinFalls));
 	}
 
 	[Test]
 	public void T03Bowl28ReturnsEndTurn () {
-		actionMaster.Bowl (8);
-		Assert.AreEqual (endTurn,actionMaster.Bowl(2));
+		int[] rolls = { 2, 8 };
+		Assert.AreEqual (endTurn, ActionMaster.NextAction (rolls.ToList()));
 	}
 
 	[Test]
 	public void T04Bowl010ReturnsEndTurn() {
-		actionMaster.Bowl (0);
-		Assert.AreEqual (endTurn, actionMaster.Bowl (10));
+		int[] rolls = { 0, 10 };
+		Assert.AreEqual (endTurn, ActionMaster.NextAction(rolls.ToList()));
 	}
 
 	[Test]
 	public void T05BowlStrikeSpareReturnsEndTurn() {
-		actionMaster.Bowl (10);
-		actionMaster.Bowl (4);
-		Assert.AreEqual (endTurn, actionMaster.Bowl(6));
+		int[] rolls = { 10, 4, 6 };
+		Assert.AreEqual (endTurn, ActionMaster.NextAction(rolls.ToList()));
 	}
 
 	[Test]
-	public void T06REMOVEDGameEndsAfter10thFrame() {
+	public void T06CheckRestAtStrikeInLastFrame () {
+		int[] rolls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10 };
+		Assert.AreEqual (reset, ActionMaster.NextAction(rolls.ToList()));
 	}
 
 	[Test]
-	public void T07CheckRestAtStrikeInLastFrame () {
-		int[] rolls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-
-		foreach (int roll in rolls) {
-			actionMaster.Bowl (roll);
-		}
-		Assert.AreEqual (reset, actionMaster.Bowl (10));
-	}
-
-	[Test]
-	public void T08CheckRestAtSpareInLastFrame () {
-		int[] rolls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-
-		foreach (int roll in rolls) {
-			actionMaster.Bowl (roll);
-		}
-		actionMaster.Bowl (1);
-		Assert.AreEqual (reset, actionMaster.Bowl (9));
+	public void T07CheckResetAtSpareInLastFrame () {
+		int[] rolls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9 };
+		Assert.AreEqual (reset, ActionMaster.NextAction(rolls.ToList()));
 	}
 
 	[Test]
 	public void T09EndGameScenario1 () {
-		int[] rolls = { 8, 2, 7, 3, 3, 4, 10, 2, 8, 10, 10, 8, 0, 10, 8, 2, };
-		foreach (int roll in rolls) {
-			actionMaster.Bowl (roll);
-		}
-		Assert.AreEqual (endGame, actionMaster.Bowl (9));
+		int[] rolls = { 8, 2, 7, 3, 3, 4, 10, 2, 8, 10, 10, 8, 0, 10, 8, 2,9 };
+		Assert.AreEqual (endGame, ActionMaster.NextAction(rolls.ToList()));
 	}
 
 	[Test]
 	public void T10GameEndsAtBowl20 () {
-		int[] rolls = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-
-		foreach (int roll in rolls) {
-			actionMaster.Bowl (roll);
-		}
-		Assert.AreEqual (endGame, actionMaster.Bowl (1));
+		int[] rolls = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+		Assert.AreEqual (endGame, ActionMaster.NextAction(rolls.ToList()));
 	}
 
 	[Test]
 	public void T11StrikeOnBowl19Then5 () {
-		int[] rolls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10};
-
-		foreach (int roll in rolls) {
-			actionMaster.Bowl (roll);
-		}
-		Assert.AreEqual (clean, actionMaster.Bowl (5));
+		int[] rolls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10,5};
+		Assert.AreEqual (clean, ActionMaster.NextAction(rolls.ToList()));
 	}
 
 	[Test]
 	public void T12aZeroAndStrikeSkipsABowl () {
-		int[] rolls = {0, 10,};
-		foreach (int roll in rolls) {
-			actionMaster.Bowl (roll);
-		}
-		Assert.AreEqual (clean, actionMaster.Bowl (5));
+		int[] rolls = {0, 10,5};
+		Assert.AreEqual (clean, ActionMaster.NextAction(rolls.ToList()));
 		}
 
 	[Test]
 	public void T1310FrameTurkey () {
-		int[] rolls = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+		int[] rolls = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,10,10,10};
+	
+		Assert.AreEqual (endGame, ActionMaster.NextAction(rolls.ToList()));
+	}
 
-		foreach (int roll in rolls) {
-			actionMaster.Bowl (roll);
-		}
-		Assert.AreEqual (reset, actionMaster.Bowl (10));
-		Assert.AreEqual (reset, actionMaster.Bowl (10));
-		Assert.AreEqual (endGame, actionMaster.Bowl (10));
+	[Test]
+	public void T1401GivesEndTurn () {
+		int[] rolls = {0,1};
+		Assert.AreEqual (endTurn, ActionMaster.NextAction(rolls.ToList()));
 	}
 }
 

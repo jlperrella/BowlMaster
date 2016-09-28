@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ActionMaster {
 
@@ -8,8 +9,17 @@ public class ActionMaster {
 	private int[] bowls = new int[21];
 	public int bowl = 1;
 		
+	public static Action NextAction (List<int> pinFalls) {
+		ActionMaster am = new ActionMaster ();
+		Action currentAction = new Action ();
 
-	public Action Bowl (int pins) {
+		foreach (int pinFall in pinFalls) {
+			currentAction = am.Bowl (pinFall);
+		}
+		return currentAction;
+	}
+
+	public Action Bowl (int pins) { //TODO MAKE PRIVATE
 		if (pins < 0 || pins > 10) {
 			throw new UnityException ("invalid pin count");
 		}
