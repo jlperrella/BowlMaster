@@ -8,14 +8,15 @@ public class PinZone : MonoBehaviour {
 	public int lastStandingCount = -1;
 	public bool ballInBox = false;
 
+	private GameManager gameManager;
+
 	private float lastChangeTime;
 	private int lastSettledCount = 10;
-	private ActionMaster actionMaster = new ActionMaster();
 	private Animator animator;
-
 		
 	void Start () {
 		animator = FindObjectOfType<PinController> ().GetComponent<Animator>();
+		gameManager = GameObject.FindObjectOfType<GameManager>();
 	}
 
 	void Update () {
@@ -70,27 +71,25 @@ public class PinZone : MonoBehaviour {
 		int standing = CountStandingPins ();
 		int pinFall = lastSettledCount - standing;
 		lastSettledCount = CountStandingPins ();
-
-		ActionMaster.Action actionInAction = actionMaster.Bowl (pinFall);
-	
-		if (actionInAction == ActionMaster.Action.Clean) {
-			animator.SetTrigger ("CleanPins");
-		}
-		else if (actionInAction  == ActionMaster.Action.EndTurn) {
-			animator.SetTrigger ("ResetPins");
-			lastSettledCount = 10;
-		}
-		else if (actionInAction  == ActionMaster.Action.Reset) {
-			animator.SetTrigger ("ResetPins");
-			lastSettledCount = 10;
-		}
-		else if (actionInAction == ActionMaster.Action.EndGame) {
-			print ("GAME OVER");
-		}
-
+		gameManager.Bowl (pinFall);
 		ballInBox = false;
 		lastStandingCount = -1;
-		Ball ball = FindObjectOfType<Ball> ();
-		ball.ResetBall ();
+	}
+		
+	public void PerformAction (ActionMaster.Action action) {
+		if (action == ActionMaster.Action.Clean) {
+			animator.SetTrigger ("CleanPins");
+		}
+		else if (action  == ActionMaster.Action.EndTurn) {
+			animator.SetTrigger ("ResetPins");
+			lastSettledCount = 10;
+		}
+		else if (action  == ActionMaster.Action.Reset) {
+			animator.SetTrigger ("ResetPins");
+			lastSettledCount = 10;
+		}
+		else if (action == ActionMaster.Action.EndGame) {
+			print ("GAME OVER");
+		}
 	}
 }

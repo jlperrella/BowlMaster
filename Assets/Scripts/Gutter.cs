@@ -2,14 +2,5 @@
 using System.Collections;
 
 public class Gutter : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	//SCRIPT USED TO IDENTIFY OBJECT ONLY
 }
