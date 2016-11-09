@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ScoreMaster {
+public static class ScoreMaster {
 
 	// returns a list of total scores like a scorecard
 	public static List<int> ScoreTotal (List<int> rolls) {
@@ -15,7 +15,6 @@ public class ScoreMaster {
 		}
 		return totalScore;
 	}
-
 
 	// return an individual list of frame scores
 	public static List<int>	ScoreFrames (List<int> rolls) {

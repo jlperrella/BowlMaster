@@ -76,19 +76,19 @@ public class PinZone : MonoBehaviour {
 		lastStandingCount = -1;
 	}
 		
-	public void PerformAction (ActionMaster.Action action) {
-		if (action == ActionMaster.Action.Clean) {
+	public void PerformAction (ActionMasterOld.Action action) {
+		if (action == ActionMasterOld.Action.Clean) {
 			animator.SetTrigger ("CleanPins");
 		}
-		else if (action  == ActionMaster.Action.EndTurn) {
+		else if (action  == ActionMasterOld.Action.EndTurn) {
 			animator.SetTrigger ("ResetPins");
 			lastSettledCount = 10;
 		}
-		else if (action  == ActionMaster.Action.Reset) {
+		else if (action  == ActionMasterOld.Action.Reset) {
 			animator.SetTrigger ("ResetPins");
 			lastSettledCount = 10;
 		}
-		else if (action == ActionMaster.Action.EndGame) {
+		else if (action == ActionMasterOld.Action.EndGame) {
 			print ("GAME OVER");
 		}
 	}

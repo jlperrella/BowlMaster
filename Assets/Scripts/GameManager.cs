@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-	private List<int> bowls = new List<int> ();
+	private List<int> rolls = new List<int> ();
 	private ScoreSheet scoreSheet;
 
 	private Ball ball;
@@ -17,10 +17,14 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Bowl (int pinFall) {
-		bowls.Add (pinFall);
-		ActionMaster.Action nextAction = ActionMaster.NextAction (bowls);
-		pinZone.PerformAction (nextAction);
-		scoreSheet.fillRollCard (bowls);
-		ball.ResetBall ();
+		try {
+			rolls.Add (pinFall);
+			pinZone.PerformAction (ActionMasterOld.NextAction (rolls)); //code change
+			scoreSheet.fillRollCard (rolls);
+			scoreSheet.fillFrames (ScoreMaster.ScoreTotal(rolls));
+			ball.ResetBall ();
+		} catch {
+			Debug.LogWarning ("error in bowl");
+		}
 	}
 }
